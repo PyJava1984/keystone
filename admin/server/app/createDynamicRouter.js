@@ -26,6 +26,11 @@ module.exports = function createDynamicRouter (keystone) {
 		next();
 	});
 
+	var healthcheckConfig = keystone.get('healthchecks');
+	if (healthcheckConfig) {
+		router.use('/server-health', require('@keystonejs/healthcheck').Route(healthcheckConfig));
+	}
+
 	// Init API request helpers
 	router.use('/api', require('../middleware/apiError'));
 	router.use('/api', require('../middleware/logError'));
